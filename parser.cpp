@@ -1,4 +1,5 @@
 #include "parser.hpp"
+#include "ast.hpp"
 #include "lexer.hpp"
 #include "exception.hpp"
 

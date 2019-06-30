@@ -26,8 +26,7 @@ namespace inter {
         if (!std::isdigit(last_char)) is_num = false;
         last_value += last_char;
       }
-      last_token = is_num ? token::num : token::str;
-      return is_num ? token::num : token::str;
+      return last_token;
     }
 
     if (last_char == '"') {

@@ -1,9 +1,11 @@
 #pragma once
 
 #include <memory>
-#include "ast.hpp"
 
 namespace inter {
+
+  class ast;
+  class fn;
 
   namespace parser { 
     std::unique_ptr<fn> parse_expr();
