@@ -15,7 +15,7 @@ where argument can be
   ```c++
     #include <functor.hpp>
 
-    inter::functor::instance()->connect("name"), [](inter::functor::arg_t ast) {
+    inter::functor::instance()->connect("name", [](inter::functor::arg_t ast) {
       // work with ast
       // need to return std::unique_ptr<inter::ast> as result
     });
