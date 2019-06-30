@@ -4,7 +4,7 @@ project (inter VERSION 1)
 
 message(${CMAKE_SOURCE_DIR})
 
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 set (SOURCES 
       ./main.cpp
       ./functor.cpp

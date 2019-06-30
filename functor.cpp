@@ -1,4 +1,5 @@
 #include "functor.hpp"
+#include "ast.hpp"
 
 namespace inter {
   functor::functor() {}
@@ -7,10 +8,10 @@ namespace inter {
     return &obj;
   }
 
-  void functor::connect(const std::string &str, functor::function fn) {
+  void functor::connect(const std::string &str, fn_t fn) {
     fn_map[str] = fn;
   }
-  std::unique_ptr<ast> functor::call(const std::string &name, const std::vector<std::unique_ptr<ast>>& args) {
+  std::unique_ptr<ast> functor::call(const std::string &name, arg_t args) {
     if (fn_map.count(name) != 0) {
       return fn_map[name](args);
     }

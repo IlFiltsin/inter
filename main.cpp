@@ -8,7 +8,7 @@
 void reg_fn() {
   auto inst = inter::functor::instance();
 
-  inst->connect("add", [](const std::vector<std::unique_ptr<inter::ast>>& ast) {
+  inst->connect("add", [](inter::functor::arg_t ast) {
     if (ast.empty()) throw inter::runtime_error("Function add must contain at least 1 parameter.");
     int64_t result = 0;
     for (auto &p_ast : ast) {
@@ -22,22 +22,23 @@ void reg_fn() {
     return std::make_unique<inter::num>(result);
   });
 
-  inst->connect("sub", [](const std::vector<std::unique_ptr<inter::ast>>& ast) {
+  inst->connect("sub", [](inter::functor::arg_t ast) {
     if (ast.empty()) throw inter::runtime_error("Function sub must contain at least 1 parameter.");
     int64_t result = 0;
     for (auto &p_ast : ast) {
       auto num_ast = inter::ast_convert::to_num(p_ast);
       if (num_ast) {
-        result -= num_ast->get();
+        if (result == 0) result = num_ast->get();
+        else result -= num_ast->get();
       } else {
-        throw inter::runtime_error("Sub: Parameters of add should be possible convert to int");
+        throw inter::runtime_error("Sub: Parameters of sub should be possible convert to int");
       }
     }
     return std::make_unique<inter::num>(result);
   });
 
 
-  inst->connect("mult", [](const std::vector<std::unique_ptr<inter::ast>>& ast) {
+  inst->connect("mult", [](inter::functor::arg_t ast) {
     if (ast.empty()) throw inter::runtime_error("Function mult must contain at least 1 parameter.");
     int64_t result = 1;
     for (auto &p_ast : ast) {
@@ -45,13 +46,13 @@ void reg_fn() {
       if (num_ast) {
         result *= num_ast->get();
       } else {
-        throw inter::runtime_error("Mult: Parameters of add should be possible convert to int");
+        throw inter::runtime_error("Mult: Parameters of mult should be possible convert to int");
       }
     }
     return std::make_unique<inter::num>(result);
   });
 
-  inst->connect("concat", [](const std::vector<std::unique_ptr<inter::ast>>& ast) {
+  inst->connect("concat", [](inter::functor::arg_t ast) {
     if (ast.empty()) throw inter::runtime_error("Function concat must contain at least 1 parameter.");
     std::string result;
     for (auto &p_ast : ast) {
@@ -59,13 +60,13 @@ void reg_fn() {
       if (str_ast) {
         result += str_ast->get();
       } else {
-        throw inter::runtime_error("Concat: Parameters of add should be possible convert to str");
+        throw inter::runtime_error("Concat: Parameters of concat should be possible convert to str");
       }
     }
     return std::make_unique<inter::str>(result);
   });
 
-  inst->connect("quit", [](const std::vector<std::unique_ptr<inter::ast>>& ast) {
+  inst->connect("quit", [](inter::functor::arg_t ast) {
     exit(0);
     return nullptr;
   });
@@ -87,7 +88,7 @@ void main_loop() {
 }
 
 int main() {
-  //auto fn = inter::parser::parse_expr();
+
   reg_fn();
   main_loop();
 
