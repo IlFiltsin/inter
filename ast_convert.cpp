@@ -13,8 +13,8 @@ namespace inter {
 
       if (value.empty()) return nullptr;
 
-      for (auto &s : value) {
-        if (!isdigit(s)) return nullptr;
+      for (auto it = value.cbegin(); it < value.cend(); ++it) {
+        if ((*it != '-' && it != value.cbegin()) && !isdigit(*it)) return nullptr;
       }
 
       return std::make_unique<num>(std::stoll(value));
